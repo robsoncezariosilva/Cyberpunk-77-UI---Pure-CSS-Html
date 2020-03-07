@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="description" content="CD projekt red" />
+  <meta charset="utf-8">
+  <title>Trabalho CD Projekt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Robson Ceazario da Silva">
+  <link href="https://fonts.googleapis.com/css?family=Orbitron&display=swap" rel="stylesheet">
+
+  <style>
+    * { 
+        box-sizing: border-box; 
+        -webkit-user-select: none;
+        -webkit-user-drag: none;
+        text-rendering: optimizeLegibility !important;
+        -webkit-font-smoothing: subpixel-antialiased !important;
+        font-variant-ligatures: none !important;
+    }
+
+    body {
+        overflow: hidden;
+    }
+
+    .video-background {
+        background: #000;
+        position: fixed;
+        top: 0; right: 0; bottom: 0; left: 0;
+        z-index: -99;
+    }
+
+    .video-foreground,
+    .video-background iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    @media (min-aspect-ratio: 16/9) {
+        .video-foreground { 
+            height: 300%; 
+            top: -100%; 
+        }
+    }
+    @media (max-aspect-ratio: 16/9) {
+        .video-foreground { 
+            width: 300%; 
+            left: -100%; 
+        }
+    }
+
+    .wrapper {
+        position: absolute;
+        right: 2.5vw;
+        bottom: 2.5vh;
+        transition: all .3s;
+    }
+
+    .reading .wrapper {
+        bottom: 0;
+        right: 0;
+    }
+
+    .reading .container {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .corners {
+        position: relative;
+    }
+
+    .container {
+        width: 25vw;
+        height: 50vh;
+        position: relative;
+        padding: 1vw;
+        padding-top: .5vw;
+        border: 5px double cyan;
+        box-shadow: 0 0 10px cyan, 0 0 10px cyan inset;
+        opacity: 0.7;
+        transition: all .3s;
+        animation: 3s distort 10s infinite;
+        overflow-x: hidden;
+        overflow-y: auto;
+        display: inline-block;
+        background: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(0, 255, 255, .4) 3px, rgba(0, 255, 255, .4) 4px);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        animation: blink 15s ease-in-out infinite;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .container {
+            width: 55vw;
+        }
+    }
+
+    .container::-webkit-scrollbar, .container::-webkit-scrollbar-track, .container::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+
+    .container::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .container::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 255, 255, .4);
+    }
+
+    .reading .container {
+        animation: none !important;
+    }
+
+    .container:hover {
+        box-shadow: 0 0 10px cyan, 
+                    0 0 10px cyan, 
+                    0 0 20px cyan, 
+                    0 0 20px cyan, 
+                    0 0 10px cyan inset,
+                    0 0 10px cyan inset;
+        filter: rgba(0, 255, 255, .2);
+    }
+
+
+    .reading .container:hover {
+        filter: none !important;
+    }
+
+    @keyframes blink {
+      0% {
+          opacity: 0.9
+      }
+
+      10% {
+          opacity: 0.4
+      }
+      
+      20%{
+          opacity: 1
+      }
+
+      30% {
+          opacity: 0.9
+      }
+
+      40% {
+          opacity: 0.4
+      }
+
+      50% {
+          opacity: 1
+      }
+
+      60%{
+          opacity: 0.5
+      }
+
+      70% {
+          opacity: 1
+      }
+
+      80%{
+          opacity: 0.4
+      }
+
+      90% {
+          opacity: 0.6
+      }
+
+      100% {
+        opacity: 1
+      }
+    }
+
+    @keyframes distort {
+        10%, 50%, 90% {
+            opacity: 1;
+            top: 0;
+            left: 0;
+            transform: scale(1, 1);
+            transform: skew(0, 0);
+        }
+
+        11%, 51%, 91% {
+            opacity: 0.8;
+            top: 0px;
+            left: -100px;
+            transform: scale(1, 1.2);
+            transform: skew(50deg, 0);
+        }
+
+        12%, 52%, 92% {
+            opacity: 0.2;
+            top: 0px;
+            left: 100px;
+            transform: scale(1, 1.2);
+            transform: skew(-80deg, 0);
+        }
+
+        13%, 53%, 93% {
+            opacity: 1;
+            top: 0;
+            left: 0;
+            transform: scale(1, 1);
+            transform: skew(0, 0);
+        }
+    }
+
+    
+    .corners::after, .corners::before {
+        content: "";
+        position: absolute;
+        filter: drop-shadow(0 0 5px cyan)
+                drop-shadow(0 0 5px cyan);
+    }
+
+    .corners::after {
+        left: -2.5%;
+        top: -2.5%;
+        width: 1.5vh;
+        height: 1.5vh;
+        border-top: 1px solid cyan;
+        border-left: 1px solid cyan;
+    }
+
+    .corners::before {
+        right: -2.5%;
+        bottom: -2.5%;
+        width: 1.5vh;
+        height: 1.5vh;
+        border-bottom: 1px solid cyan;
+        border-right: 1px solid cyan;
+    }
+
+    .orbitron {
+        font-family: 'Orbitron', monospace;
+        font-weight: 500;
+        font-size: 10%;
+        color: cyan;
+        text-shadow: 0 0 5px cyan,
+            0 0 5px cyan,
+            0 0 5px cyan,
+            0 0 5px cyan;
+        transition: all .3s;
+        word-wrap: break-word;
+    }
+
+    .title {
+        font-size: 2.5vh;
+    }
+
+    .reading .title {
+        font-size: 5vh;
+    }
+
+    .text-body {
+        font-size: 1.2vh;
+    }
+
+    .reading .text-body {
+        font-size: 2.5vh;
+    }
+
+    .scanner-wrapper {
+        position: absolute;
+        bottom: 2vh;
+        left: 2vw;
+        transition: all .3s;
+    }
+
+    .scanner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        padding: 1vh;
+        z-index: 1;
+        background: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(219, 13, 21, .2) 3px, rgba(219, 13, 21, .2) 4px);
+        background-size: cover;
+        filter: drop-shadow(0 0 5px rgba(219, 13, 21, 1))
+                drop-shadow(0 0 5px rgba(219, 13, 21, .75)); 
+        transition: all .3s;
+        animation: 5s distort 5s infinite;
+    }
+
+    .reading .scanner-wrapper {
+        position: absolute;
+        left: calc(98vw - 10vh);
+        bottom: 2vh;
+    }
+
+    .scanner:hover {
+        filter: drop-shadow(0 0 5px rgba(219, 13, 21, 1))
+                drop-shadow(0 0 5px rgba(219, 13, 21, .75))
+                drop-shadow(0 0 10px rgba(219, 13, 21, 1)); 
+    }
+
+    .scanner::before, .scanner::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    .scanner::before {
+        height: 100%;
+        border: 2px solid;
+        border-image: linear-gradient(to left, #DB0D15, #DB0D15 25%, transparent 25%, transparent 75%, #DB0D15 75%, #DB0D15 100%);
+        border-image-slice: 2;
+        -webkit-mask: linear-gradient(to bottom, #000, #000 25%, transparent 25%, transparent 75%, #000 75%, #000);
+        z-index: 5;
+    }
+
+    .scanner::after {
+        visibility: hidden;
+        height: 15%;
+        z-index: 10;
+        background: linear-gradient(rgb(220, 20, 60, .8), rgba(220, 20, 60, .6), rgba(220, 20, 60, 0));
+        box-shadow: 0 0 50px rgb(220, 20, 60, .3);
+        margin: 2px 0 0 2px;
+    }
+
+    .scanner svg {
+        height: 10vh;
+    }
+
+    .authors-wrapper {
+        position: absolute;
+        right: 2vw;
+        top: 2vh;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-direction: column;
+        animation: blink 10s ease-in-out infinite;
+        transition: all .3s;
+    }
+
+    .reading .authors-wrapper {
+        opacity: 0 !important;
+        animation: none !important;
+    }
+
+    .authors {
+        width: 100%;
+        height: 3vh;
+        border-top: 3px double #DB0D15;
+        border-right: 3px double #DB0D15;
+        filter: drop-shadow(0 0 5px rgba(219, 13, 21, 1))
+                drop-shadow(0 0 5px rgba(219, 13, 21, .75))
+                drop-shadow(0 0 10px rgba(219, 13, 21, 1))
+                drop-shadow(0 0 5px rgba(219, 13, 21, 1)); 
+    }
+
+    .authors-wrapper .orbitron {
+        font-size: 2vh;
+        color: #DB0D15;
+        text-shadow: 0 0 5px #DB0D15,
+            0 0 5px #DB0D15,
+            0 0 5px #DB0D15,
+            0 0 5px #DB0D15,
+            0 0 5px #DB0D15,
+            0 0 5px #DB0D15;
+        padding: 1vh;
+        padding-top: 0;
+    }
+
+    .container img {
+        border: 5px double cyan;
+        box-shadow: 0 0 10px cyan, 0 0 10px cyan inset;
+        height: 15vh;
+        animation: blink 30s ease-in-out infinite;
+        transition: all .3s;
+    }
+
+    .container img:hover {
+        animation: none !important;
+    }
+
+  </style>
+</head>
+
+<body>
+    <div class="video-background">
+        <div class="video-foreground">
+            <iframe class="video" 
+                    src="https://www.youtube.com/embed/qIcTM8WXFjk?autoplay=1&controls=0&loop=1&showinfo=0&rel=0&mute=1&autohide=1&modestbranding=1" 
+                    width="100%" 
+                    height="100%" 
+                    frameborder="0" 
+                    webkitallowfullscreen 
+                    mozallowfullscreen 
+                    allowfullscreen 
+                    allow="autoplay;">
+            </iframe>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="corners" onclick="document.body.classList.toggle('reading')">
+            <div class="container">
+                <p class="orbitron">
+                    <font class="title">História<br/></font>
+                    <img src="https://img.franchising.pl/pl/704/6af/iwinski-kicinski.jpg" style="float: right; margin-left: 1vw; margin-bottom: 1vh" />
+                    <font class="text-body">A CD Projekt foi fundada em 1994 por Marcin Iwiński e Michal Kicińsk. De acordo com o primeiro, apesar de gostar de jogar jogos eletrônicos quando criança, eles eram escassos na Polônia (que na época estava sob a esfera de influência da União Soviética). Não existia nenhuma lei de direito autoral no país e Iwiński vendia cópias piratas de jogos ocidentais em um mercado de Varsóvia enquanto ainda estava no colegial. Ele conheceu Kiciński no ensino médio e este tornou-se seu parceiro de negócios; Kiciński também vendia jogos na época.<br/><br/></font>
+                    <font class="text-body">Os dois queriam realizar negócios legalmente e começaram a importar jogos de revendedoras dos Estados Unidos, tendo sido os primeiros a importar títulos no formato CD-ROM. Iwiński e Kicińsk fundaram sua própria companhia no início da década de 1990, após o fim da União Soviética e o início da transição para uma economia de mercado. Eles fundaram a CD Project no segundo semestre de 1994, possuindo inicialmente em caixa apenas dois mil dólares e usando o apartamento de um amigo como escritório.<br/><br/></font>
+                    <font class="text-body">A companhia formou em 2002 em Łódź um estúdio desenvolvedor de jogos chamado CD Projekt RED, chefiado por Zieliński. O estúdio produziu uma demonstração de jogo, que Badowski chamou em retrospecto de "uma merda". O demo era um RPG eletrônico visto de uma perspectiva de cima, similar a Dark Alliance e Diablo, empregando o mesmo motor de jogo que Zieliński havia utilizado em um jogo anterior seu. Iwiński e Kiciński apresentaram o demo para diversas publicadoras, sem nenhum sucesso.<br/><br/></font>
+                    <img src="https://giantbomb1.cbsistatic.com/uploads/original/0/289/1049836-2407339.jpg" style="float: left; height: 25vh; margin-right: 1vw; margin-bottom: 1vh" />
+                    <font class="text-body">A equipe não estava familiarizada com o desenvolvimento de jogos eletrônicos e passou quase dois anos organizando a produção. Eles receberam ajuda da BioWare, que auxiliou na divulgação na Electronic Entertainment Expo de 2004 ao oferecer um espaço a CD Projekt em seu estande ao lado de Jade Empire. A BioWare também licenciou seu motor de jogo Aurora para ser usado no projeto.<br/><br/>O orçamento superou o esperado e a equipe original composta por quinze pessoas precisou ser expandida para cem, ao custo de vinte milhões de złote. Iwiński afirmou que conteúdos foram retirados do jogo por questões orçamentárias, porém as personalidades dos personagens foram mantidas; entretanto, houve dificuldades em traduzir o texto polonês para o inglês. A Atari acabou concordando em publicar o título mundialmente. O jogo passou ao todo cinco anos em desenvolvimento e, já que ele levaria a série Wiedźmin para o público internacional, a CD Projekt escolheu o nome em inglês The Witcher. Ele foi lançado em outubro de 2007 e recebeu críticas favoráveis.</font>
+                    <img src="https://i.imgur.com/HrtbIht.jpg" style="float: right; height: 25vh; margin-left: 1vw; margin-top: 2vh" />
+                    <font class="title"><br/><br/>Filosofia e Missão<br/></font>
+                    <img src="https://wallup.net/wp-content/uploads/2017/11/23/519348-Geralt_of_Rivia-The_Witcher_3_Wild_Hunt-CD_Projekt_RED-748x421.jpg" style="float: left; height: 25vh; margin-right: 1vw; margin-bottom: 1vh" />
+                    <font class="text-body">Ao desenvolver um título, a CD Projekt decide sempre se focar em alguns aspectos e avaliar o valor dos outros elementos. Ela espera que essa abordagem ajude a manter a qualidade de seus títulos.[40] A empresa é focada no desenvolvimento de RPG eletrônicos, com a equipe trabalhando em franquias estabelecidas com fãs e apresentando outras franquias menos conhecidas para um público maior. Ao desenvolver um título de mundo aberto, os desenvolvedores priorizam o projeto das missões sobre o tamanho do mundo por acreditarem que os jogadores ficam encorajados ao terem escolhas e mergulham mais dentro do jogo. A CD Projekt também tem a intenção de seguir o modelo da Rockstar Games, em que a companhia trabalha em um único projeto com uma grande equipe, evitando vários jogos sendo produzidos ao mesmo tempo. <br/><br/>
+                        A equipe faz dos jogadores sua prioridade; de acordo com Iwiński, o apoio dos jogadores "motiva" a empresa (que se considera como "rebelde"). A equipe se foca em estratégias criativas sobre estratégias de negócios. A CD Projekt RED é contra a inclusão de tecnologias de gestão de direitos digitais em jogos eletrônicos e softwares. A companhia acredita que isso é uma prática ineficiente para impedir a pirataria, baseando-se nos dados de vendas de Assassins of Kings. A empresa descobriu que seu lançamento inicial (que utilizou tecnologias de gestão de direitos) foi pirateado mais de 4,5 milhões de vezes, enquanto seu relançamento livre foi pirateado bem menos. Por conta disso, Wild Hunt foi lançado diretamente sem nenhuma tecnologia de gestão de direitos digitais. A CD Projekt também acredita que conteúdos para download gratuitos deveriam ser padrão, lançando dezesseis DLCs gratuitos para Wild Hunt como exemplo para outras empresas da indústria.
+                    </font>
+                    <font class="title"><br/><br/>Hoje<br/></font>
+                    <img src="http://www.tenhomaisdiscosqueamigos.com/wp-content/uploads/2019/06/Keanu-Reeves-em-Cyberpunk-2077.jpg" style="float: right; height: 25vh; margin-left: 1vw;" />
+                    <font class="text-body">Desde 2013, a CD Projekt foca seus recursos no desenvolvimento de Cyberpunk 2077.  Baseado no RPG de mesa Cyberpunk 2020, criado por Mike Pondsmith em 1988. Grande promessa, Cyberpunk 2077  busca ser o maior jogo já feito, o que destronaria o atual campeão, The Elder Scrolls II.. Em 2018, na E3, foi lançado uma gameplay de 48 minutos. Os desenvolvedores disseram no Reddit que essa gameplay equivalie a menos do que 1% de todo o jogo. Novamente na E3, só que dessa vez a de 2019, Keanu Reeves entregou aos fãs da CD Projekt a data de lançamento de Cyberpunk 2077, marcada para 16 de abril de 2020</font>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn"></div>
+
+    <div class="scanner-wrapper">
+        <div class="scanner" onclick="javascript:window.location='https://en.cdprojektred.com/'">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#DB0D15;}
+</style>
+<g id="CD_Projekt_RED_horizontal">
+	<g>
+		<path class="st0" d="M45.5,114c1.9-2,4-4.2,5.3-5.3c-0.4,0-0.9-0.1-1.6-0.2c-1.4,1.2-3.1,3-4.6,4.7c-2,2.1-3.6,4-3.6,4
+			c0,0,0,0-0.1,0.1c-1.3,0.4-3.5,1-4.9,1.3c-2.1,0.6-4.1,0.4-4.1,1.9c0,0-2.2,1.2-1.7,3c0,0,4.5-3.6,8.3-4.2c0,0-2.3,1.5-2.1,3.6
+			c0,0,3.1-4.7,6.8-1.8c0,0-1.6-2.2-1-3.4C42.9,116.9,44.1,115.5,45.5,114z M38.4,58.6c-0.2,0.1-0.4,0.1-0.6,0.1
+			c-0.6,0-1.3-0.4-1.5-1c0-0.1-0.1-0.1-0.1-0.2l-0.5,0.2c0.4,1.2,1.6,1.8,2.7,1.5c0.3-0.1,0.5-0.2,0.7-0.4c0.6-0.6,0.9-1.5,0.6-2.4
+			l-1.1,0.4c0.1,0.2,0.1,0.3,0.1,0.5c0,0.2,0,0.3-0.1,0.5l0.5,0.3c-0.1,0.1-0.2,0.3-0.3,0.4C38.7,58.5,38.6,58.5,38.4,58.6z
+			 M83.3,55l-21.9,5.3c0,0,0,0,0,0l0,0l42.8-18.5l-35.3,4.3l18.9-13.8l-20.2,7.9l0,0l3.1-6.1L56.2,44.6L56,44.3L76.6,0L43.2,39.5
+			L43,18L30.7,46.7l-0.6-8.5l-6,22.1l0,0v0c0,0,0.8-0.6,1.9-0.9l0,0c0.1,0,0.2,0,0.3-0.1c0,0,0,0,0,0c0.1,0,0.2,0,0.3-0.1
+			c0,0,0,0,0,0c0.1,0,0.2,0,0.3,0c0,0,0,0,0,0c0.1,0,0.2,0,0.3,0c0,0,0,0,0.1,0c0.1,0,0.2,0,0.3,0c0,0,0,0,0,0c0.1,0,0.2,0,0.3,0
+			c0,0,0,0,0,0c0.1,0,0.2,0,0.3,0.1c0,0,0,0,0.1,0c0.1,0,0.2,0,0.3,0.1c2.1,0.7,3.8,0,3.8,0s1.9,1.2,1.9,2.3h0c0,0,0,0,0,0
+			s-2.6,0.1-2.6-1c0,0-3.3-1.2-7.8,0.5l9.6,4.1c0,0-0.5-1.8,0-2.5c0.2-0.2,0.5-0.3,1-0.1c0.2,0.1,0.3,0,0.4,0
+			c0.7-0.8-2.9-7.5-2.9-7.5s-3.3-0.3-6.1,2.6c-0.2,0.2-0.4,0.4-0.6,0.6v0c0,0,0,0,0,0c0.3-0.5,1.2-2,2.7-3.2
+			c0.9-0.8,2.1-1.5,3.4-1.8c0.4-0.9-0.1-0.3,0.7-0.8c0,0,0,0,0,0c0.4-2.4,1.7-8.5,6.3-13.7c0.3-0.3,0.6-0.7,1-1c0,0-1.2,2.2-1.2,3.8
+			c0,0,1.2-1.8,2.8-3.4l0,0v0c0,0,0,0,0,0.1c-0.3,0.6-2.5,5.4-2.3,6.7c0,0,0,0,0,0l4.5-4.1c0,0,0,0,0,0c-0.1,0.2-4.2,5.7-4.6,7.5
+			c0,0,0,0,0,0l6.8-4.8l0,0c0,0-0.9,1.2-1.2,1.8c-0.2,0.5-0.3,0.6-0.3,0.7l0,0l3.6-1.6c0,0-0.2,0.2-0.4,0.5l-1.4,1.4L45.4,47
+			L43,49.4l0,0.1l-1.9,1.9l-1.2,1.2l0,0c0,0-1,1-1.1,1.6c-0.1,0.5,0.4,0.8,0.4,0.8h0c0.5,0.3,0.9,0.7,1.1,1.2c0.1,0.3,0.2,0.7,0.2,1
+			c0,0.7-0.3,1.4-0.8,1.8c-0.5,0.5-1.2,0.8-1.9,0.8c-0.7,0-1.3-0.2-1.8-0.6c0.1,0.1,1.4,1.8,3.9,0.5l3-2.2l0.1-0.1l3.1-2.3
+			c0.7,0.9,1.4,1.9,2.1,3.1l0,0c-1.9,1.8-5,4.8-8.2,8.1c-1.9,2-3.8,4.1-5.4,6.1l0,0l0,0l1.1-5.3l0,0l0.1-0.4c0,0,0,0,0,0l0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0-0.1,0c0,0,0,0-0.1,0.1c0,0,0,0-0.1,0.1c0,0,0,0-0.1,0.1c0,0-0.1,0-0.1,0.1c0,0,0,0-0.1,0c0,0,0,0.1-0.1,0.1
+			c0,0,0,0-0.1,0.1c0,0-0.1,0.1-0.1,0.1c0,0,0,0-0.1,0.1c0,0-0.1,0.1-0.1,0.1c0,0,0,0-0.1,0.1c0,0,0,0-0.1,0.1c0,0,0,0,0,0
+			c0,0-0.1,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0-0.1,0.1c0,0-0.1,0.1-0.1,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0.1c0,0.1-0.1,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1
+			c0,0-0.1,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1c0,0.1-0.1,0.1-0.1,0.2c0,0-0.1,0.1-0.1,0.1
+			c0,0.1-0.1,0.1-0.1,0.2c0,0-0.1,0.1-0.1,0.1c-0.1,0.1-0.1,0.2-0.2,0.2c0,0,0,0.1-0.1,0.1c-0.1,0.1-0.2,0.2-0.2,0.3l0,0
+			c-0.1,0.1-0.2,0.2-0.2,0.3c0,0,0,0.1-0.1,0.1c-0.1,0.1-0.1,0.2-0.2,0.3c0,0-0.1,0.1-0.1,0.1c-0.1,0.1-0.1,0.2-0.2,0.3
+			c0,0.1-0.1,0.1-0.1,0.1c0,0.1-0.1,0.2-0.2,0.3c0,0.1-0.1,0.1-0.1,0.2c-0.1,0.1-0.1,0.2-0.2,0.3c0,0-0.1,0.1-0.1,0.2
+			c-0.1,0.1-0.1,0.2-0.2,0.3c0,0.1-0.1,0.1-0.1,0.2c-0.2,0.5-0.5,0.9-0.7,1.4c0,0,0,0,0,0l0,0l0,0l-1.2,0.2c0.2-0.6,0.5-1.2,0.8-1.8
+			l-2,2.8l2-0.2c-1.7,4-3,9.2-3,16.6l1.6-1c1.5,8.3,8.3,11.9,8.3,11.9l0-0.1c3.8,2.5,8.3,4.2,13.4,4.9l0,0c0.7,0.1,1.3,0.1,1.4,0.2
+			c0,0,0,0,0,0c0.1,0,0.2,0,0.3,0c2.7,0.2,5.4,0.1,7.9-0.2c0,0.1,0,0.2,0,0.3c0,1.6,0.9,3,2.1,3.1c-2.4,4.1-4.3,9.4-4.3,9.5
+			c-0.1,0.2-0.3,0.7-0.5,0.8c-0.6,0.1-0.6,0.2-1.3,0.4l0,0c-0.2-0.2-2.1-0.6-4,0.2l0,0c0,0,0,0,0,0c-1.1,0.5-2.1,1.3-2.9,2.8
+			c0.8-0.6,2.2-1.7,3.4-1.5c-1.4,0.8-3.8,2.3-4.1,4.5c0,0,8.4-5.9,12.6-4.8c0,0-0.6,0.7,0.8,3.2l0.7-2.4c0.7-2.3-2.1-2.6-3.3-2.7
+			c0,0,0,0,0,0c0,0,0.1-0.4,0.4-1c0.7-1.8,2.4-5.9,4.2-8.8c0-0.1,0.1-0.1,0.1-0.2l-0.3-0.5c0,0,0.2-0.3,0.4-0.5
+			c0.2-0.4,0.6-1,0.6-1.9c0-0.7-0.2-1.5-0.6-2.6l0,0l0,0l1.1-0.5c0.1,0.1,0.1,0.3,0.2,0.4c0,0,0,0.1,0,0.1c0,0.1,0.1,0.2,0.1,0.3
+			c0,0,0,0.1,0,0.1c0,0.1,0.1,0.2,0.1,0.3c0,0,0,0.1,0,0.1l6.2-1.9l-1.4-1.1l0,0l0,0l0,0h0l-0.1-0.1l0,0l0,0L46.1,82.5c0,0,0,0,0,0
+			l0,0c6.5,3.1,14,6.8,26.8,12.7c12.6,5.8,20.6,9.2,24.7,10.9c0,0,0.1,0,0.1,0h0c0.6,0.2,1.1,0.5,1.5,0.6c0.9,0.3,1.7,0.7,1.8,0.7
+			c0.1,0,0.2-0.1,0.2-0.1l-47-32.3L83.3,55z M50.7,65L50.7,65l-7,5.3l5-11.1l0,0v0C49.6,60.9,50.2,62.9,50.7,65L50.7,65z
+			 M75.8,103.1L76,104h0l0,0l8.2,4.8l2.1,1.2l-1.1-2.9c6.8,2,12.3,2.1,15.9,0.4c0,0,0,0,0,0C94.7,109.4,78.8,104,75.8,103.1z"/>
+		<path d="M31.6,60.7c0,1.1,2.6,1,2.6,1c0-1-1.9-2.3-1.9-2.3s-1.8,0.7-3.8,0c-0.8-0.3-1.7-0.2-2.4,0c-1,0.7-2.2,1.8-2.2,1.8
+			C28.4,59.5,31.6,60.7,31.6,60.7z M48.8,59.2l-5,11.1l7-5.3C50.2,62.9,49.6,60.9,48.8,59.2z M101.1,107.5c0,0-15.8-5.9-55-25
+			l23.4,21.3h0l0,0c2.1-0.9,3.6-1.5,6.5,0.2l-0.2-0.8C78.8,104,94.7,109.4,101.1,107.5z M63.1,106c0.5,1.1,0.6,1.9,0.6,2.6
+			c0,0.9-0.3,1.5-0.6,1.9c-0.1,0.2-0.4,0.5-0.4,0.5l0.7,1c0.1,0,1.4-1.1,1.4-3.3c0-0.9-0.2-1.9-0.8-3.1L63.1,106z M49.1,108.5
+			c1.1,0.2,2.1,0.3,2.1,0.3l0.1-0.6c0,0-1-0.1-2.1-0.3L49.1,108.5z M48.3,58.2c-0.6-1.2-1.3-2.2-2.1-3.1l-6.3,4.6
+			c-2.5,1.3-3.9-0.5-3.9-0.5c0.5,0.4,1.1,0.6,1.8,0.6c1.5,0,2.7-1.2,2.7-2.6c0-0.4-0.1-0.7-0.2-1c-0.2-0.5-0.6-1-1.1-1.2l0,0
+			c0,0-0.6-0.3-0.4-0.8c0.1-0.5,1.1-1.6,1.1-1.6l0,0l3.1-3.1l0-0.1l2.8-2.8l1.4-1.4c0.3-0.3,0.4-0.5,0.4-0.5l-3.6,1.6
+			c0,0-0.1,0,0.3-0.7c0.4-0.6,1.2-1.8,1.2-1.8l-6.8,4.8c0.4-1.9,4.6-7.6,4.6-7.6l-4.5,4.1c-0.3-1.4,2.3-6.8,2.3-6.8
+			c-1.6,1.6-2.8,3.4-2.8,3.4c0-1.6,1.2-3.8,1.2-3.8c-5.4,5.4-6.9,12.2-7.3,14.7c-0.8,0.5-0.3-0.1-0.7,0.8c-3.6,1-5.7,4.3-6.2,5.1
+			c2.9-3.6,6.7-3.3,6.7-3.3s4.4,8.2,2.5,7.5c-1.9-0.7-1,2.6-1,2.6l-3.6-1.6c0.6,1.2,1.8,4,1.1,6.9c-0.7,1.1-1.5,2.5-2.1,4.2l1.2-0.2
+			c0.2-0.5,0.5-1,0.7-1.4c0-0.1,0.1-0.1,0.1-0.2c0-0.1,0.1-0.2,0.2-0.3c0-0.1,0.1-0.1,0.1-0.2c0.1-0.1,0.1-0.2,0.2-0.3
+			c0-0.1,0.1-0.1,0.1-0.2c0.1-0.1,0.1-0.2,0.2-0.3c0-0.1,0.1-0.1,0.1-0.1c0.1-0.1,0.1-0.2,0.2-0.3c0,0,0.1-0.1,0.1-0.1
+			c0.1-0.1,0.1-0.2,0.2-0.3c0,0,0-0.1,0.1-0.1c0.1-0.1,0.2-0.2,0.2-0.3c0,0,0,0,0,0c0.1-0.1,0.2-0.2,0.2-0.3c0,0,0.1-0.1,0.1-0.1
+			c0.1-0.1,0.1-0.2,0.2-0.2c0,0,0.1-0.1,0.1-0.1c0-0.1,0.1-0.1,0.1-0.2c0,0,0.1-0.1,0.1-0.1c0-0.1,0.1-0.1,0.1-0.2
+			c0,0,0.1-0.1,0.1-0.1c0-0.1,0.1-0.1,0.1-0.2c0,0,0.1-0.1,0.1-0.1c0,0,0.1-0.1,0.1-0.1c0,0,0.1-0.1,0.1-0.1c0-0.1,0.1-0.1,0.1-0.1
+			c0,0,0.1-0.1,0.1-0.1c0,0,0.1-0.1,0.1-0.1c0,0,0.1-0.1,0.1-0.1c0,0,0.1-0.1,0.1-0.1c0,0,0.1-0.1,0.1-0.1c0,0,0.1-0.1,0.1-0.1
+			c0,0,0-0.1,0.1-0.1c0,0,0.1-0.1,0.1-0.1c0,0,0,0,0.1-0.1c0.1-0.1,0.1-0.1,0.2-0.2c0,0,0,0,0.1-0.1c0,0,0.1-0.1,0.1-0.1
+			c0,0,0,0,0.1-0.1c0,0,0.1,0,0.1-0.1c0,0,0,0,0.1,0c0,0,0,0,0.1-0.1c0,0,0,0,0.1-0.1c0,0,0,0,0.1-0.1c0,0,0,0,0.1-0.1
+			c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0l0,0c0,0,0,0,0,0l-0.1,0.4l0,0l-1.1,5.3C39,67.2,45.3,61,48.3,58.2z M35.7,57.7l0.5-0.2c0,0.1,0,0.1,0.1,0.2
+			c0.3,0.6,0.9,1,1.5,1c0.2,0,0.4,0,0.6-0.1c0.3-0.1,0.6-0.4,0.8-0.6l-0.5-0.3c0.1-0.1,0.1-0.3,0.1-0.5c0-0.2,0-0.4-0.1-0.5l1.1-0.4
+			c0.4,1.2-0.2,2.4-1.3,2.8C37.4,59.5,36.2,58.9,35.7,57.7z"/>
+	</g>
+</g>
+</svg>
+        </div>
+    </div>
+
+    <div class="authors-wrapper">
+        <div class="orbitron">Robson Cezario da Silva</div>
+        <div class="authors"></div>
+        <div class="orbitron">Ernani Alexandre Wippel Neto</div>
+        <div class="orbitron">Gabriel Ferreira Machado</div>
+    </div>
+</body>
+</html>
